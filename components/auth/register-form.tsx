@@ -13,18 +13,28 @@ import { signUp } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const registerSchema = z.object({
-  name: z.string().min(3, 'Name must be at least 3 characters long'),
-  email: z.string().email('Enter a valid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters long'),
-  confirmPassword: z.string().min(6, 'Password must be at least 6 characters long'),
-}).refine(
-  (data) => data.password === data.confirmPassword,
-  {
+const validEmailDomains = ['gmail.com', 'yahoo.com', 'outlook.com'];
+
+const registerSchema = z
+  .object({
+    name: z.string().min(3, 'Name must be at least 3 characters long'),
+    email: z
+      .string()
+      .email('Enter a valid email')
+      .refine((email) => {
+        const domain = email.split('@')[1];
+        return validEmailDomains.includes(domain);
+      }, {
+        message: 'Invalid email domain. Use gmail, yahoo, or outlook.',
+      }),
+    password: z.string().min(6, 'Password must be at least 6 characters long'),
+    confirmPassword: z.string().min(6, 'Password must be at least 6 characters long'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
-    path: ['confirmPassword']
-  }
-);
+    path: ['confirmPassword'],
+  });
+
 
 type RegisterFormData = z.infer<typeof registerSchema>
 
