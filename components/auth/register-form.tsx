@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signUp } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const registerSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters long'),
@@ -28,7 +29,7 @@ const registerSchema = z.object({
 type RegisterFormData = z.infer<typeof registerSchema>
 
 export default function RegisterForm() {
-    const router = useRouter();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
@@ -54,7 +55,7 @@ export default function RegisterForm() {
           console.error(error);
         } else {
           toast.success('Registration successful');
-          router.push('/profile');
+          router.push('/auth/login');
         }
 
       } catch (err) {
@@ -65,7 +66,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onRegisterSubmit)}>
+    <form className="w-full max-w-md p-5 bg-card rounded-lg shadow-sm border space-y-2" onSubmit={handleSubmit(onRegisterSubmit)}>
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input id="name" type="text" placeholder="Enter your name" {...register('name')} />
@@ -93,6 +94,8 @@ export default function RegisterForm() {
       <Button type="submit" disabled={isPending}>
         {isPending ? 'Registering...' : 'Register'}
       </Button>
+      <p className="text-sm text-muted-foreground">Already have an account? <Link className="text-blue-500" href="/auth/login">Login</Link></p>
     </form>
+
   );
 }
