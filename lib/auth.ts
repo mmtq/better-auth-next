@@ -2,7 +2,8 @@ import {betterAuth} from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from './db'
 import * as schema from './db/schema/auth-schema'
-import { createAuthMiddleware } from 'better-auth/api'
+import { createAuthMiddleware, APIError } from 'better-auth/api'
+import { normalizeName, VALID_DOMAINS } from './utils'
 // import { nextCookies } from 'better-auth/next-js'
 
 export const auth = betterAuth({
@@ -26,8 +27,26 @@ export const auth = betterAuth({
     },
     hooks: {
         before: createAuthMiddleware( async (ctx) =>{
-            if (ctx.path === '/sign-up/emali'){
-                
+            if (ctx.path === '/sign-up/email'){
+                const email = ctx.body.email as string
+                const domain = email.split('@')[1]
+                if (!VALID_DOMAINS().includes(domain)){
+                throw new APIError("BAD_REQUEST", {
+                    message: "Invalid email domain. Use gmail, yahoo, or outlook."
+                })
+                }
+
+                const name = normalizeName(ctx.body.name as string)
+                // ctx.body.name = name
+                return {
+                    context: {
+                        ...ctx,
+                        body: {
+                            ...ctx.body,
+                            name
+                        }
+                    }
+                }
             }
         })
     },
@@ -46,3 +65,5 @@ export const auth = betterAuth({
     // plugins: [nextCookies()] 
     
 })
+
+export type ErrorCode = keyof typeof auth.$ERROR_CODES | "UNKNOWN"

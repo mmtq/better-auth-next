@@ -6,7 +6,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 import { z } from 'zod'
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signUp } from "@/lib/auth-client";
@@ -41,6 +41,7 @@ type RegisterFormData = z.infer<typeof registerSchema>
 export default function RegisterForm() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -55,14 +56,18 @@ export default function RegisterForm() {
   const onRegisterSubmit = (data: RegisterFormData) => {
     startTransition(async () => {
       try {
-        const { error } = await signUp.email({
+        const session = await signUp.email({
           name: data.name,
           email: data.email,
           password: data.password
         });
 
+        const { error } = session;
+        console.log(session);
+
         if (error) {
-          console.error(error);
+          setApiError(error.message || 'Something went wrong');
+          toast.error(apiError);
         } else {
           toast.success('Registration successful');
           router.push('/auth/login');
