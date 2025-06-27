@@ -6,10 +6,11 @@ import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { signIn } from '@/lib/auth-client'
 import Link from 'next/link'
+import { APIError } from 'better-auth/api'
 
 const loginSchema = z.object({
     email: z.string().email('Enter a valid email'),
@@ -19,6 +20,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 export default function LoginForm() {
+    const [apiError, setApiError] = useState<string | null>();
 
     const router = useRouter()
     const [isPending, startTransition] = useTransition();
@@ -41,6 +43,8 @@ export default function LoginForm() {
                 });
                 if (error) {
                     console.error(error);
+                    setApiError(error.message || 'Something went wrong');
+                    toast.error(apiError);
                 } else {
                     toast.success('Login successful');
                     router.push('/profile');
