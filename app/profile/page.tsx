@@ -4,6 +4,8 @@ import { signOut } from "@/lib/auth-client";
 import { headers } from "next/headers";
 import SignOutButton from "@/components/auth/sign-out-button";
 import ReturnButton from "@/components/general/return-button";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({
@@ -11,18 +13,28 @@ export default async function ProfilePage() {
   });
 
   if (!session?.user) {
-    return <p className="text-red-500">Not signed in</p>;
+    return redirect("/auth/login");
   }
 
   return (
     <div className="px-8 py-16 container mx-auto max-w-screen-lg space-y-8 overflow-hidden">
-      <ReturnButton href="/" label="Home" />
-      <h1 className="text-2xl font-bold">Profile</h1>
+      <div className="flex items-center justify-between">
+        <ReturnButton href="/" label="Home" />
+        {
+          session.user.role === "ADMIN" && (
+            <Button asChild size={'sm'}><Link href="/admin/dashboard">Admin Dashboard</Link></Button>
+          )
+        }
+      </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Profile</h1>
+        <SignOutButton />
+
+      </div>
       <pre className="overflow-auto w-full bg-muted text-sm rounded-md p-4 border border-border">
         <code className="whitespace-pre">{JSON.stringify(session, null, 2)}</code>
       </pre>
 
-      <SignOutButton />
     </div>
   );
 }

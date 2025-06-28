@@ -28,6 +28,6 @@ export default function SignOutButton() {
         
     }
   return (
-    <Button onClick={handleSubmit} disabled={isPending} >{isPending ? 'Signing out...' : 'Sign out'}</Button>
+    <Button size={'sm'} variant={'destructive'} onClick={handleSubmit} disabled={isPending} >{isPending ? 'Signing out...' : 'Sign out'}</Button>
   )
 }
