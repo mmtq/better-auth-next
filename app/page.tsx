@@ -1,3 +1,4 @@
+import SignOutButton from "@/components/auth/sign-out-button";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -30,7 +31,7 @@ export default async function Home() {
                 <Button>Go to Profile</Button>
               </Link>
               <form action="/api/auth/signout" method="post">
-                <Button variant="outline" type="submit">Logout</Button>
+                <SignOutButton />
               </form>
             </>
           ) : (
