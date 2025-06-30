@@ -3,13 +3,12 @@ import ReturnButton from "@/components/general/return-button";
 
 export default function Register() {
   return (
-    <div className="px-8 py-16 container mx-auto max-w-screen-lg space-y-8">
-      <div className="space-y-8">
+    <main className="min-h-screen flex items-center justify-center py-2 px-4 bg-background">
+      <div className="w-full max-w-md space-y-6">
         <ReturnButton href="/" label="Home" />
-        <h1 className="text-2xl font-bold">Register</h1>
+        <RegisterForm />
       </div>
+    </main>
 
-      <RegisterForm />
-    </div>
   )
 }
