@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
   const isAuthPageRoute = pathname.startsWith('/auth')
 
   // ❌ Redirect USERs from admin area
-  if (pathname === '/admin/dashboard' && session?.user?.role !== 'ADMIN') {
+  if (pathname === '/admin/dashboard' && session?.user?.role !== 'admin') {
     return NextResponse.redirect(new URL('/', req.url))
   }
 

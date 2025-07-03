@@ -21,7 +21,7 @@ export default async function ProfilePage() {
       <div className="flex items-center justify-between">
         <ReturnButton href="/" label="Home" />
         {
-          session.user.role === "ADMIN" && (
+          session.user.role === "admin" && (
             <Button asChild size={'sm'}><Link href="/admin/dashboard">Admin Dashboard</Link></Button>
           )
         }

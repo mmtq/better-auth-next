@@ -14,8 +14,6 @@ interface Props {
 const DeleteUserButton = ({ id, onDelete }: Props) => {
     const [isPending, startTransition] = useTransition();
 
-
-
     const handleClick = () => {
         startTransition(async () => {
             try {

@@ -1,6 +1,8 @@
 'use client';
 
 import { getUsers } from "@/actions";
+import BanUserButton from "@/components/general/ban-user-button";
+import BanUserButtonDisabled from "@/components/general/ban-user-button-disabled";
 import DeleteUserButton from "@/components/general/delete-user-button";
 import DeleteUserDisabled from "@/components/general/delete-user-disabled";
 import ReturnButton from "@/components/general/return-button";
@@ -10,15 +12,19 @@ import { RefreshCcw } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface User {
-    id: string;
     name: string;
     email: string;
-    role: string;
+    emailVerified: boolean;
+    image?: string | null;
+    role?: string | null;
+    banned?: boolean | null;
+    banReason?: string | null;
+    id: string;
 }
+
 
 export default function Dashboard() {
     const [userList, setUserList] = useState<User[]>([]);
-    const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isLoadingUsers, setIsLoadingUsers] = useState(false);
     const { data: session } = useSession(); // if useSession supports status
 
@@ -27,12 +33,17 @@ export default function Dashboard() {
     const fetchUsers = async () => {
         setIsLoadingUsers(true);
         const users = await getUsers();
-        setUserList(users);
+        const sortedUsers = users.sort((a,b) =>{
+            if(a.role === 'admin' && b.role !== 'admin') return -1;
+            if(a.role !== 'admin' && b.role === 'admin') return 1;
+            return 0
+        })
+        setUserList(sortedUsers);
         setIsLoadingUsers(false);
     };
 
     useEffect(() => {
-        if (user?.role === 'ADMIN') {
+        if (user?.role === 'admin') {
             fetchUsers();
         }
     }, [user?.role]);
@@ -47,7 +58,7 @@ export default function Dashboard() {
         );
     }
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || user.role !== 'admin') {
         return (
             <main>
                 <div className="px-8 py-16 container mx-auto max-w-screen-lg space-y-8">
@@ -60,7 +71,13 @@ export default function Dashboard() {
     const handleUserDelete = (id: string) => {
         setUserList(prev => prev.filter(user => user.id !== id));
     };
-
+    const handleUserBan = (id:string) => {
+        setUserList(prev =>
+            prev.map(user =>
+                user.id === id
+                    ?{...user, banned: true}
+                    : user));
+    }
 
     return (
         <main>
@@ -96,10 +113,22 @@ export default function Dashboard() {
                                         <TableCell>{user.role}</TableCell>
                                         <TableCell>
                                             {
-                                                user.role !== 'ADMIN' ? (
-                                                    <DeleteUserButton id={user.id} onDelete={handleUserDelete} />
+                                                user.role !== 'admin' ? (
+                                                    <div className="flex gap-2">
+                                                        <DeleteUserButton id={user.id} onDelete={handleUserDelete} />
+                                                        {
+                                                            user.banned ? (
+                                                                <BanUserButtonDisabled />
+                                                            ) : (
+                                                                <BanUserButton id={user.id} onBan={handleUserBan} />
+                                                            )
+                                                        }
+                                                    </div>
                                                 ) : (
-                                                    <DeleteUserDisabled />
+                                                    <div className="flex gap-2">
+                                                        <DeleteUserDisabled />
+                                                        <BanUserButtonDisabled />
+                                                    </div>
                                                 )
                                             }
                                         </TableCell>
