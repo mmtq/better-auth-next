@@ -17,6 +17,7 @@
     "better-auth": "^1.2.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.0.1",
     "drizzle-orm": "^0.44.2",
     "lucide-react": "^0.523.0",
     "neon-serverless": "^0.5.3",

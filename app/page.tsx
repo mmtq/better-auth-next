@@ -1,3 +1,4 @@
+import { checkFullAccess } from "@/actions";
 import SignOutButton from "@/components/auth/sign-out-button";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
@@ -11,6 +12,13 @@ export default async function Home() {
 
   const user = session?.user;
 
+  let hasFullAccess = false
+  if (user) {
+     hasFullAccess = await checkFullAccess({
+      id: user.id,
+      permissions: ['update:own', 'delete:own']
+    })
+  }
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-3xl w-full text-center space-y-6">
@@ -23,6 +31,12 @@ export default async function Home() {
             ? "You're logged in. Get started by exploring your dashboard or managing your profile."
             : "Create your account or log in to access powerful tools and features."}
         </p>
+
+        {
+          hasFullAccess && (
+            <div>You have full access</div>
+          )
+        }
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
           {user ? (

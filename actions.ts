@@ -8,13 +8,12 @@ import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
 export async function getUsers() {
-    const {users} = await auth.api.listUsers({
+    const { users } = await auth.api.listUsers({
         query: {
-            
+
         },
         headers: await headers()
     })
-    console.log('users', users)
     return users
 }
 
@@ -45,43 +44,15 @@ export async function deleteUser(id: string) {
 }
 
 export async function banUser(id: string) {
-    // const session = await auth.api.getSession({
-    //     headers: await headers()
-    // })
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
 
-    // if (!session?.user || session?.user?.role !== 'admin') {
-    //     return { success: false, error: 'Unauthorized' };
-    // }
+    if (!session?.user || session?.user?.role !== 'admin') {
+        return { success: false, error: 'Unauthorized' };
+    }
 
-
-    // try {
-    //     console.log('tried', id)
-    //     const bannedUser = await me.banUser({
-    //         userId: id,
-    //         fetchOptions: {
-    //             headers: await headers()
-    //         },
-    //         banReason: "Spamming", // Optional (if not provided, the default ban reason will be used - No reason)
-    //         banExpiresIn: 60 * 60 * 24 * 7, // Optional (if not provided, the ban will never expire)
-    //     });
-
-    //     console.log("bannedUser ", bannedUser);
-
-    //     revalidatePath('/admin/dashboard');
-    //     return {
-    //         success: true,
-    //         rowCount: 1,
-    //     };
-
-    // } catch (error) {
-    //     console.error(error);
-    //     return {
-    //         success: false,
-    //         error: error instanceof Error ? error.message : 'Unknown error',
-    //     };
-    // }
-
-    const bannedUser =  await auth.api.banUser({
+    const bannedUser = await auth.api.banUser({
         body: {
             userId: id,
             banReason: "Spamming", // Optional (if not provided, the default ban reason will be used - No reason)
@@ -89,7 +60,21 @@ export async function banUser(id: string) {
         },
         headers: await headers()
     })
-    console.log('id: ', id)
     console.log("bannedUser ", bannedUser);
-    
 }
+
+type PostPermission = "create" | "read" | "update" | "delete" | "update:own" | "delete:own";
+
+export const checkFullAccess = async ({id, permissions} : {id: string, permissions: PostPermission[]}) => {
+    const res = await auth.api.userHasPermission({
+        body: {
+            userId: id,
+            permission: {
+                posts: permissions
+            }
+        }
+    })
+
+    console.log('res: ', res)
+    return res.success
+} 

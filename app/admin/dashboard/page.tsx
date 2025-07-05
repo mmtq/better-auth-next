@@ -1,12 +1,14 @@
 'use client';
 
-import { getUsers } from "@/actions";
+import { checkFullAccess, getUsers } from "@/actions";
 import BanUserButton from "@/components/general/ban-user-button";
 import BanUserButtonDisabled from "@/components/general/ban-user-button-disabled";
 import DeleteUserButton from "@/components/general/delete-user-button";
 import DeleteUserDisabled from "@/components/general/delete-user-disabled";
 import ReturnButton from "@/components/general/return-button";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { auth } from "@/lib/auth";
 import { useSession } from "@/lib/auth-client";
 import { RefreshCcw } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -22,31 +24,27 @@ interface User {
     id: string;
 }
 
-
 export default function Dashboard() {
     const [userList, setUserList] = useState<User[]>([]);
     const [isLoadingUsers, setIsLoadingUsers] = useState(false);
     const { data: session } = useSession(); // if useSession supports status
-
+    const [hasFullAccess, setHasFullAccess] = useState(false);
     const user = session?.user;
-
-    const fetchUsers = async () => {
-        setIsLoadingUsers(true);
-        const users = await getUsers();
-        const sortedUsers = users.sort((a,b) =>{
-            if(a.role === 'admin' && b.role !== 'admin') return -1;
-            if(a.role !== 'admin' && b.role === 'admin') return 1;
-            return 0
-        })
-        setUserList(sortedUsers);
-        setIsLoadingUsers(false);
-    };
 
     useEffect(() => {
         if (user?.role === 'admin') {
             fetchUsers();
         }
-    }, [user?.role]);
+
+        if (user?.id) {
+            const fetchFullAccess = async () => {
+                const res = await checkFullAccess({ id: user.id, permissions: ['update', 'delete'] });
+                setHasFullAccess(res);
+            };
+            fetchFullAccess();
+        }
+
+    }, [user?.role, user?.id]);
 
     if (!session) {
         return (
@@ -57,7 +55,6 @@ export default function Dashboard() {
             </main>
         );
     }
-
     if (!user || user.role !== 'admin') {
         return (
             <main>
@@ -68,14 +65,26 @@ export default function Dashboard() {
         );
     }
 
+    const fetchUsers = async () => {
+        setIsLoadingUsers(true);
+        const users = await getUsers();
+        const sortedUsers = users.sort((a, b) => {
+            if (a.role === 'admin' && b.role !== 'admin') return -1;
+            if (a.role !== 'admin' && b.role === 'admin') return 1;
+            return 0
+        })
+        setUserList(sortedUsers);
+        setIsLoadingUsers(false);
+    };
+
     const handleUserDelete = (id: string) => {
         setUserList(prev => prev.filter(user => user.id !== id));
     };
-    const handleUserBan = (id:string) => {
+    const handleUserBan = (id: string) => {
         setUserList(prev =>
             prev.map(user =>
                 user.id === id
-                    ?{...user, banned: true}
+                    ? { ...user, banned: true }
                     : user));
     }
 
@@ -85,6 +94,10 @@ export default function Dashboard() {
                 <div className="space-y-8">
                     <ReturnButton href="/profile" label="Profile" />
                     <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+                </div>
+                <div className="flex flex-row justify-start gap-4">
+                    <Button>Manage own posts</Button>
+                    <Button disabled={!hasFullAccess}>Manage all posts</Button>
                 </div>
                 <div>
                     <div className="flex flex-row justify-between">
