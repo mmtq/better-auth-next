@@ -7,6 +7,7 @@ import { auth } from "./lib/auth"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
+
 export async function getUsers() {
     const { users } = await auth.api.listUsers({
         query: {
@@ -65,7 +66,7 @@ export async function banUser(id: string) {
 
 type PostPermission = "create" | "read" | "update" | "delete" | "update:own" | "delete:own";
 
-export const checkFullAccess = async ({id, permissions} : {id: string, permissions: PostPermission[]}) => {
+export const checkFullAccess = async ({ id, permissions }: { id: string, permissions: PostPermission[] }) => {
     const res = await auth.api.userHasPermission({
         body: {
             userId: id,
@@ -77,4 +78,65 @@ export const checkFullAccess = async ({id, permissions} : {id: string, permissio
 
     console.log('res: ', res)
     return res.success
-} 
+}
+
+export async function changeUserRole(id: string, role: 'admin' | 'user') {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!session?.user || session?.user?.role !== 'admin') {
+        return { success: false, error: 'Unauthorized' };
+    }
+
+    if (session.user.id === id) {
+        return { success: false, error: 'You cannot change your own role' };
+    }
+
+    const hasPermission = await auth.api.userHasPermission({
+        body: {
+            userId: id,
+            permission: {
+                user: ['set-role']
+            }
+        },
+        headers: await headers()
+    })
+    if (hasPermission.success === false) {
+        return { success: false, error: 'You do not have permission to change this user role' };
+    } else {
+        console.log('hasPermission: ', hasPermission);
+
+        try {
+            const result = await auth.api.setRole({
+                body: {
+                    userId: id,
+                    role: role
+                },
+                headers: await headers()
+            })
+
+            if (result.user) {
+                return {
+                    success: true,
+                    user: result.user,
+                    message: 'User role updated successfully'
+                }
+            }
+
+            return {
+                success: false,
+                error: 'Internal server error'
+            }
+
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : 'Unknown error',
+            };
+        }
+
+    }
+
+}

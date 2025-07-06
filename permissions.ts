@@ -9,6 +9,8 @@ const statements = {
 
 export const ac = createAccessControl(statements)
 
+console.log(adminAc.statements);
+
 export const roles = {
     ['user']: ac.newRole({
         posts: ["create", "read", "update:own", "delete:own"]

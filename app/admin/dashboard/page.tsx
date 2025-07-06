@@ -6,6 +6,7 @@ import BanUserButtonDisabled from "@/components/general/ban-user-button-disabled
 import DeleteUserButton from "@/components/general/delete-user-button";
 import DeleteUserDisabled from "@/components/general/delete-user-disabled";
 import ReturnButton from "@/components/general/return-button";
+import RoleSelector from "@/components/general/role-selector";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { auth } from "@/lib/auth";
@@ -123,7 +124,8 @@ export default function Dashboard() {
                                         <TableCell>{idx + 1}</TableCell>
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
-                                        <TableCell>{user.role}</TableCell>
+                                        {/* <TableCell>{user.role}</TableCell> */}
+                                        <TableCell><RoleSelector initialRole={user.role || 'user'} id={user.id} /></TableCell>
                                         <TableCell>
                                             {
                                                 user.role !== 'admin' ? (
