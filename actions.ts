@@ -61,7 +61,6 @@ export async function banUser(id: string) {
         },
         headers: await headers()
     })
-    console.log("bannedUser ", bannedUser);
 }
 
 type PostPermission = "create" | "read" | "update" | "delete" | "update:own" | "delete:own";
@@ -75,8 +74,6 @@ export const checkFullAccess = async ({ id, permissions }: { id: string, permiss
             }
         }
     })
-
-    console.log('res: ', res)
     return res.success
 }
 
@@ -105,8 +102,6 @@ export async function changeUserRole(id: string, role: 'admin' | 'user') {
     if (hasPermission.success === false) {
         return { success: false, error: 'You do not have permission to change this user role' };
     } else {
-        console.log('hasPermission: ', hasPermission);
-
         try {
             const result = await auth.api.setRole({
                 body: {

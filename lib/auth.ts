@@ -25,6 +25,18 @@ export const auth = betterAuth({
         //     verify: ...
         // }
     },
+    socialProviders: {
+        google: {
+            prompt: 'select_account',
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+        },
+        github: {
+            prompt: 'select_account',
+            clientId: process.env.GITHUB_CLIENT_ID as string,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+        }
+    },
     hooks: {
         before: createAuthMiddleware(async (ctx) => {
             if (ctx.path === '/sign-up/email') {

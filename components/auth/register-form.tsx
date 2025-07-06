@@ -84,7 +84,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(onRegisterSubmit)}
-      className="w-full max-w-md p-6 rounded-xl bg-white dark:bg-card border border-border shadow-sm space-y-6"
+      className="w-full max-w-md p-6 rounded-xl bg-white dark:bg-card border border-border shadow-sm space-y-2"
     >
       <div className="text-center space-y-1">
         <h2 className="text-2xl font-semibold">Create an account</h2>

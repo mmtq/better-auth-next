@@ -1,6 +1,5 @@
 import { createAccessControl } from "better-auth/plugins/access";
 import { defaultStatements, adminAc } from "better-auth/plugins/admin/access";
-import { userRoleEnum } from "./lib/db/schema/auth-schema";
 
 const statements = {
     ...defaultStatements,
@@ -9,14 +8,12 @@ const statements = {
 
 export const ac = createAccessControl(statements)
 
-console.log(adminAc.statements);
-
 export const roles = {
     ['user']: ac.newRole({
         posts: ["create", "read", "update:own", "delete:own"]
     }),
     ['admin']: ac.newRole({
         ...adminAc.statements,
-        posts: ["create", "read", "update", "delete"]
+        posts: ["create", "read", "update", "delete", "update:own","delete:own"]
     })
 }
