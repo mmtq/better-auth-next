@@ -3,7 +3,7 @@
 import { BanIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { banUser } from "@/actions";
+import { banUser } from "@/actions/auth-actions";
 import { useTransition } from "react";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { checkFullAccess } from "@/actions";
+import { checkFullAccess } from "@/actions/auth-actions";
 import SignOutButton from "@/components/auth/sign-out-button";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";

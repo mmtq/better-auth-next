@@ -1,9 +1,9 @@
 'use server'
 
 import { headers } from "next/headers"
-import db from "./lib/db"
-import { user } from "./lib/db/schema/auth-schema"
-import { auth } from "./lib/auth"
+import db from "../lib/db"
+import { user } from "../lib/db/schema/auth-schema"
+import { auth } from "../lib/auth"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
@@ -133,5 +133,4 @@ export async function changeUserRole(id: string, role: 'admin' | 'user') {
         }
 
     }
-
 }

@@ -1,40 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getSessionCookie } from 'better-auth/cookies'
-import { auth } from './lib/auth'
-import { headers } from 'next/headers'
+import { NextRequest, NextResponse } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 
-const protectedRoutes = ['/admin/dashboard', '/profile']
+const protectedRoutes = ["/profile", "/admin/dashboard"];
 
 export async function middleware(req: NextRequest) {
-  const { pathname, origin } = req.nextUrl
+  const { nextUrl } = req;
+  const sessionCookie = getSessionCookie(req);
 
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
+  const res = NextResponse.next();
 
-  const isLoggedIn = !!session
-  const isProtected = protectedRoutes.includes(pathname)
-  const isAuthApiRoute = pathname.startsWith('/api/auth')
-  const isAuthPageRoute = pathname.startsWith('/auth')
+  const isLoggedIn = !!sessionCookie;
+  const isOnProtectedRoute = protectedRoutes.includes(nextUrl.pathname);
+  const isOnAuthRoute = nextUrl.pathname.startsWith("/auth");
 
-  // ❌ Redirect USERs from admin area
-  if (pathname === '/admin/dashboard' && session?.user?.role !== 'admin') {
-    return NextResponse.redirect(new URL('/', req.url))
+  if (isOnProtectedRoute && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  // 🔐 Block protected routes for not logged-in users
-  if (isProtected && !isLoggedIn) {
-    return NextResponse.redirect(new URL('/auth/login', req.url))
+  if (isOnAuthRoute && isLoggedIn) {
+    return NextResponse.redirect(new URL("/profile", req.url));
   }
 
-  // 🚫 Block access to /auth/* if already logged in
-  if (isAuthPageRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL('/profile', req.url))
-  }
-
-  return NextResponse.next()
+  return res;
 }
 
 export const config = {
-  matcher: ['/profile', '/dashboard/:path*', '/admin/:path*', '/auth/:path*'],
-}
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
+};

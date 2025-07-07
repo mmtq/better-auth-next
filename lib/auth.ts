@@ -6,7 +6,8 @@ import { createAuthMiddleware, APIError } from 'better-auth/api'
 import { normalizeName, VALID_DOMAINS } from './utils'
 import { admin } from 'better-auth/plugins'
 // import { nextCookies } from 'better-auth/next-js'
-import { ac, roles } from '@/permissions'
+import { ac, roles } from '@/lib/permissions'
+import { sendEmailAction } from '@/actions/sendmail'
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -16,7 +17,7 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
         minPasswordLength: 6,
-        requireEmailVerification: false,
+        requireEmailVerification: true,
         autoSignIn: false,
         //-------to change password hashing algorithm--------
         // -> set up a hashing and verification method with argon2 or bcrypt
@@ -24,6 +25,21 @@ export const auth = betterAuth({
         //     hash: ......
         //     verify: ...
         // }
+    },
+    emailVerification: {
+        sendOnSignUp: true,
+        expiresIn: 60 * 60,
+        autoSignInAfterVerification: true,
+        sendVerificationEmail: async ({ user, url}) => {
+            await sendEmailAction({
+                to: user.email,
+                subject: 'Verify your email',
+                meta: {
+                    description: 'Please verify your email to complete your registration.',
+                    link: String(url)
+                }
+            })
+        }
     },
     socialProviders: {
         google: {
@@ -87,7 +103,11 @@ export const auth = betterAuth({
     session: {
         expiresIn: 30 * 24 * 60 * 60,
     },
-
+    account:{
+        accountLinking: {
+            enabled: false
+        }
+    },
     advanced: {
         database: {
             generateId: () => {

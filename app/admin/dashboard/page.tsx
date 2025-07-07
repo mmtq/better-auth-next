@@ -1,6 +1,6 @@
 'use client';
 
-import { checkFullAccess, getUsers } from "@/actions";
+import { checkFullAccess, getUsers } from "@/actions/auth-actions";
 import BanUserButton from "@/components/general/ban-user-button";
 import BanUserButtonDisabled from "@/components/general/ban-user-button-disabled";
 import DeleteUserButton from "@/components/general/delete-user-button";

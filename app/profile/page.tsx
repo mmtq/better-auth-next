@@ -6,7 +6,7 @@ import SignOutButton from "@/components/auth/sign-out-button";
 import ReturnButton from "@/components/general/return-button";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { checkFullAccess } from "@/actions";
+import { checkFullAccess } from "@/actions/auth-actions";
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({

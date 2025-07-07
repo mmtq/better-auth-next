@@ -3,7 +3,7 @@
 import { TrashIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useTransition } from "react";
-import { deleteUser } from "@/actions";
+import { deleteUser } from "@/actions/auth-actions";
 import { toast } from "sonner";
 
 interface Props {

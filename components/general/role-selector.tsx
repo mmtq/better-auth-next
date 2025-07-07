@@ -8,7 +8,7 @@ import {
     SelectContent,
     SelectItem,
 } from "@/components/ui/select"
-import { changeUserRole } from "@/actions"
+import { changeUserRole } from "@/actions/auth-actions"
 import { toast } from "sonner"
 
 interface Props {
