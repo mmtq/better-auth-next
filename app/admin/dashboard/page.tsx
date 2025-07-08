@@ -89,6 +89,14 @@ export default function Dashboard() {
                     : user));
     }
 
+    const handleRoleChange = (id: string) => {
+        setUserList(prev =>
+            prev.map(user =>
+                user.id === id
+                    ? { ...user, role: user.role === 'admin' ? 'user' : 'admin' }
+                    : user));
+    }
+
     return (
         <main>
             <div className="px-8 py-16 container mx-auto max-w-screen-lg space-y-8">
@@ -125,7 +133,7 @@ export default function Dashboard() {
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
                                         {/* <TableCell>{user.role}</TableCell> */}
-                                        <TableCell><RoleSelector initialRole={user.role || 'user'} id={user.id} /></TableCell>
+                                        <TableCell><RoleSelector initialRole={user.role || 'user'} id={user.id} onRoleChange={handleRoleChange} /></TableCell>
                                         <TableCell>
                                             {
                                                 user.role !== 'admin' ? (

@@ -14,9 +14,10 @@ import { toast } from "sonner"
 interface Props {
     id: string
     initialRole: string
+    onRoleChange: (id: string) => void
 }
 
-const RoleSelector = ({ id, initialRole }: Props) => {
+const RoleSelector = ({ id, initialRole, onRoleChange }: Props) => {
     const [selectedRole, setSelectedRole] = useState<string>(initialRole)
     const [isPending, startTransition] = useTransition();
 
@@ -27,6 +28,7 @@ const RoleSelector = ({ id, initialRole }: Props) => {
                 if (response.success) {
                     setSelectedRole(value);
                     toast.success(response.message);
+                    onRoleChange(id);
                 } else {
                     toast.error(response.error);
                 }

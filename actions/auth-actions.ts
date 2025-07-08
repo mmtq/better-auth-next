@@ -131,6 +131,26 @@ export async function changeUserRole(id: string, role: 'admin' | 'user') {
                 error: error instanceof Error ? error.message : 'Unknown error',
             };
         }
+    }
+}
 
+export async function resendVerificationEmailAction(email: string) {
+    try {
+        const response = await auth.api.sendVerificationEmail({
+            body: {
+                email,
+                callbackURL: '/auth/verify'
+            },
+            headers: await headers()
+        })
+
+        if (response.status) {
+            return { success: true, message: 'Verification email sent successfully' };
+        } else {
+            return { success: false , error: 'Error sending verification email' };
+        }
+    } catch (error) {
+        console.log('Error resending verification email:', error);
+        return { success: false, error: 'Error resending verification email' };
     }
 }

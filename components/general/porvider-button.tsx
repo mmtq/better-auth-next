@@ -10,7 +10,11 @@ interface Props {
 
 const ProviderButton = ({ name, signIn }: Props) => {
   const onClick = async() => {
-    await authClient.signIn.social({ provider: name });
+    await authClient.signIn.social({
+      provider: name,
+      callbackURL: '/auth/profile',
+      errorCallbackURL: '/auth/login/error',
+    });
   }
 
   return (

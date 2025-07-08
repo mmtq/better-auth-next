@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 interface Props {
     id: string;
-    onDelete?: (id: string) => void
+    onDelete: (id: string) => void
 }
 
 const DeleteUserButton = ({ id, onDelete }: Props) => {
@@ -26,7 +26,7 @@ const DeleteUserButton = ({ id, onDelete }: Props) => {
                     toast.error(response.error);
                 } else {
                     toast.success('User deleted successfully');
-                    onDelete?.(id); // notify parent to refresh list
+                    onDelete(id); // notify parent to refresh list
                 }
 
             } catch (error) {

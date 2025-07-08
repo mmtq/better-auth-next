@@ -31,12 +31,14 @@ export const auth = betterAuth({
         expiresIn: 60 * 60,
         autoSignInAfterVerification: true,
         sendVerificationEmail: async ({ user, url}) => {
+            const link = new URL(url)
+            link.searchParams.set('callbackURL', '/auth/verify')
             await sendEmailAction({
                 to: user.email,
                 subject: 'Verify your email',
                 meta: {
                     description: 'Please verify your email to complete your registration.',
-                    link: String(url)
+                    link: String(link)
                 }
             })
         }
@@ -115,6 +117,8 @@ export const auth = betterAuth({
             }
         },
     },
+    // trustedOrigins: ["http://localhost:3000/auth/profile", "http://localhost:3000/auth/login/error"],
+
     //  if you want to use SignInEmail or SignUpEmail in Server Actions, cookies won't be set automatically.
     plugins: [
         // nextCookies(),
