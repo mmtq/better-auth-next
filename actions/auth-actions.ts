@@ -6,6 +6,7 @@ import { user } from "../lib/db/schema/auth-schema"
 import { auth } from "../lib/auth"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 
 export async function getUsers() {
@@ -139,8 +140,9 @@ export async function resendVerificationEmailAction(email: string) {
         const response = await auth.api.sendVerificationEmail({
             body: {
                 email,
-                callbackURL: '/auth/verify'
+                callbackURL: '/auth/verify',
             },
+            
             headers: await headers()
         })
 

@@ -20,7 +20,6 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 export default function LoginForm() {
-  const [apiError, setApiError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
@@ -46,9 +45,10 @@ export default function LoginForm() {
         })
 
         if (error) {
-          console.error(error)
-          setApiError(error.message || 'Something went wrong')
           toast.error(error.message || 'Login failed')
+          if(error.code === "EMAIL_NOT_VERIFIED"){
+            router.push('/auth/verify?error=email_not_verified')
+          }
         } else {
           toast.success('Login successful')
           router.push('/profile')
@@ -74,10 +74,6 @@ export default function LoginForm() {
           </Link>
         </p>
       </div>
-
-      {apiError && (
-        <p className="text-sm text-red-500 text-center">{apiError}</p>
-      )}
 
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>

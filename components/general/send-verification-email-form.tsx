@@ -6,19 +6,30 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { resendVerificationEmailAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
+import { z } from 'zod'
+import { useRouter } from "next/navigation";
+
+const emailSchema = z.string().email('Enter a valid email')
 
 interface Props {
   
 }
 
 const SendVerificationEmailForm = ({  }: Props) => {
+    const router = useRouter()
     const [isPending, startTransition] = useTransition()
     const [email, setEmail] = useState('')
     const handleClick = () => {
         startTransition( async() => {
+            const result = emailSchema.safeParse(email)
+            if(!result.success) {
+                toast.error(result.error.issues[0].message)
+                return
+            }
             try {
                 const res = await resendVerificationEmailAction(email)
                 if(res.success) {
+                    router.push('/auth/verify/success')
                     toast.success('Verification email sent successfully')
                 } else {
                     toast.error('Error sending verification email')

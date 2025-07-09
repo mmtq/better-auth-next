@@ -41,7 +41,7 @@ export const auth = betterAuth({
                     link: String(link)
                 }
             })
-        }
+        },
     },
     socialProviders: {
         google: {

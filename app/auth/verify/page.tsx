@@ -1,11 +1,18 @@
-'use client'
 import ReturnButton from "@/components/general/return-button";
 import SendVerificationEmailForm from "@/components/general/send-verification-email-form";
-import { useSearchParams } from "next/navigation";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-    const Params = useSearchParams();
-    const error = Params.get('error');
+interface Props {
+    searchParams: Promise<{error: string}>
+}
+
+export default async function Page({searchParams}: Props) {
+    const {error} = await searchParams
+    if(!error){
+        redirect('/auth/login')
+    } else {
+        console.log(error)
+    }
     return (
         <main className="min-h-screen flex items-center justify-center px-4 bg-background">
             <div className="w-full max-w-md space-y-6">
@@ -15,21 +22,16 @@ export default function Page() {
                         Verify your email
                     </h1>
                     {
-                        error && (
-                        error === 'invalid_token' || error === 'token_expired'
-                        ? (
-                            <p className="text-destructive">
-                                The verification link is invalid or has expired.
-                            </p>
-                        )
-                        : (
-                            <p className="text-destructive">
-                                Oops! Something went wrong. Please try again.
-                            </p>
-                        )
-                    )
+                        (error === 'invalid_token' || error === 'token_expired')
+                        ?
+                        (<p className="text-destructive">
+                            The verification link is invalid or has expired.
+                        </p>): error === 'email_not_verified'
+                        ?
+                        (<p className="text-destructive">
+                            Verify your email or resend the verification email.
+                        </p>) : null
                     }
-
                     <SendVerificationEmailForm />
 
                 </div>
