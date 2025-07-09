@@ -3,12 +3,39 @@
 import transporter from "@/lib/nodemailer";
 
 const styles = {
-  container:
-    "max-width:500px;margin:20px auto;padding:20px;border:1px solid #ddd;border-radius:6px;",
-  heading: "font-size:20px;color:#333;",
-  paragraph: "font-size:16px;",
-  link: "display:inline-block;margin-top:15px;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:4px;",
+  container: `
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 24px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #ffffff;
+    color: #212529;
+  `,
+  heading: `
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #212529;
+  `,
+  paragraph: `
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    color: #4a4a4a;
+  `,
+  link: `
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: #2563eb;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 6px;
+  `,
 };
+
 
 export async function sendEmailAction({
   to,

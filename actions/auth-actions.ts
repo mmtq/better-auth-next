@@ -142,17 +142,60 @@ export async function resendVerificationEmailAction(email: string) {
                 email,
                 callbackURL: '/auth/verify',
             },
-            
+
             headers: await headers()
         })
 
         if (response.status) {
             return { success: true, message: 'Verification email sent successfully' };
         } else {
-            return { success: false , error: 'Error sending verification email' };
+            return { success: false, error: 'Error sending verification email' };
         }
     } catch (error) {
         console.log('Error resending verification email:', error);
         return { success: false, error: 'Error resending verification email' };
     }
+}
+
+export async function forgotPasswordAction(email: string) {
+    try {
+        const response = await auth.api.forgetPassword({
+            body: {
+                email,
+                redirectTo: '/auth/reset-password',
+            },
+            headers: await headers()
+        })
+
+        if (response.status) {
+            return { success: true, message: 'Password reset email sent successfully' };
+        } else {
+            return { success: false, error: 'Error sending password reset email' };
+        }
+    } catch (error) {
+        console.error('Error sending password reset email:', error);
+        return { success: false, error: 'Error sending password reset email' };
+    }
+}
+
+export async function resetPasswordAction({ token, password }: { token: string, password: string }) {
+    try {
+        const response = await auth.api.resetPassword({
+            body: {
+                token: token,
+                newPassword: password
+            },
+            headers: await headers()
+        })
+
+        if (response.status) {
+            return { success: true, message: 'Password reset successfully' };
+        } else {
+            return { success: false, error: 'Error resetting password' };
+        }
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        return { success: false, error: 'Error resetting password' };
+    }
+
 }

@@ -19,6 +19,16 @@ export const auth = betterAuth({
         minPasswordLength: 6,
         requireEmailVerification: true,
         autoSignIn: false,
+        sendResetPassword: async ({ user, url }) => {
+            await sendEmailAction({
+                to: user.email,
+                subject: 'Reset your password',
+                meta: {
+                    description: 'Click the link below to reset your password.',
+                    link: url
+                }
+            })
+        }
         //-------to change password hashing algorithm--------
         // -> set up a hashing and verification method with argon2 or bcrypt
         // password: {
