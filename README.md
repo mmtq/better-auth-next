@@ -21,14 +21,14 @@ This is a complete authentication system built with **Better Auth**, **Next.js 1
 
 ## 🛠️ Getting Started
 
-### 1. Clone the Repository
+<b>1. Clone the Repository</b>
 
 ```bash
 git clone https://github.com/your-username/better-auth-app.git
 cd better-auth-app
 ```
 
-### 2. Install Dependencies
+<b>2. Install Dependencies</b>
 
 ```bash
 npm install
@@ -36,7 +36,7 @@ npm install
 pnpm install
 ```
 
-### 3. Setup Environment Variables
+<b>3. Setup Environment Variables</b>
 
 Create a `.env` file based on `.env.example`:
 
