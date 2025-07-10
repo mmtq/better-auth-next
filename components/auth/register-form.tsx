@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signUp } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import ProviderButton from "../general/porvider-button"
 
 const validEmailDomains = ['gmail.com', 'yahoo.com', 'outlook.com']
 
@@ -157,6 +158,10 @@ export default function RegisterForm() {
       <Button type="submit" disabled={isPending} className="w-full">
         {isPending ? 'Registering...' : 'Register'}
       </Button>
+      <div className="grid sm:grid-cols-1 py-2 md:grid-cols-2 gap-2">
+          <ProviderButton name="google" signIn={false} />
+          <ProviderButton name="github" signIn={false} />
+        </div>
     </form>
   )
 }

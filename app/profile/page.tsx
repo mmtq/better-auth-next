@@ -1,14 +1,15 @@
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/lib/auth-client";
 import { headers } from "next/headers";
 import SignOutButton from "@/components/auth/sign-out-button";
 import ReturnButton from "@/components/general/return-button";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { checkFullAccess } from "@/actions/auth-actions";
+import Image from "next/image";
 
 export default async function ProfilePage() {
+  
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -23,7 +24,7 @@ export default async function ProfilePage() {
   });
 
   return (
-    <div className="px-8 py-16 container mx-auto max-w-screen-lg space-y-8 overflow-hidden">
+    <div className="container mx-auto max-w-screen-lg space-y-8 overflow-hidden">
       <div className="flex items-center justify-between">
         <ReturnButton href="/" label="Home" />
         {
@@ -33,8 +34,27 @@ export default async function ProfilePage() {
         }
       </div>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Profile</h1>
+        <div className="flex items-center gap-4">
+          {
+            session.user.image && (
+              <div className="relative w-8 h-8">
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name}
+                  fill
+                  className="rounded-full"
+                />
+              </div>
+            )
+          }
+          <h1 className="text-2xl font-bold">{session.user.name}</h1>
+          <Button variant={'outline'} asChild><Link href="/profile/edit">Update Profile</Link></Button>
+        </div>
         <SignOutButton />
+      </div>
+      <div>
+        <p><span className="font-bold">Email:</span> {session.user.email}</p>
+        <p><span className="font-bold">Role:</span> {session.user.role}</p>
       </div>
       <div className="flex gap-4">
         <Button>Manage own posts</Button>

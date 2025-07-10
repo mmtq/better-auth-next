@@ -42,7 +42,7 @@ const SendVerificationEmailForm = ({ }: Props) => {
     }
     return (
 
-        <main className="min-h-screen flex items-center justify-center px-4 bg-background">
+        <main className="flex items-center justify-center px-4 bg-background">
             <div className="w-full max-w-md space-y-6">
                 <ReturnButton href="/auth/login" label="Login" />
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Forgot Password</h2>

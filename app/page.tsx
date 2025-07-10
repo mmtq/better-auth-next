@@ -12,54 +12,38 @@ export default async function Home() {
 
   const user = session?.user;
 
-  let hasFullAccess = false
-  if (user) {
-     hasFullAccess = await checkFullAccess({
-      id: user.id,
-      permissions: ['update:own', 'delete:own']
-    })
-  }
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-3xl w-full text-center space-y-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800">
-          {user ? `Welcome, ${user.name}!` : "Welcome to Our Platform"}
-        </h1>
+    <div className="flex py-10 flex-col items-center justify-center text-center gap-6 max-w-3xl mx-auto">
+      <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+        {user ? `Welcome, ${user.name}!` : "Welcome to Our Platform"}
+      </h1>
 
-        <p className="text-gray-600 text-lg md:text-xl">
-          {user
-            ? "You're logged in. Get started by exploring your dashboard or managing your profile."
-            : "Create your account or log in to access powerful tools and features."}
-        </p>
-
-        {
-          hasFullAccess && (
-            <div>You have full access</div>
-          )
-        }
-
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-          {user ? (
-            <>
-              <Link href="/profile">
-                <Button>Go to Profile</Button>
-              </Link>
-              <form action="/api/auth/signout" method="post">
-                <SignOutButton />
-              </form>
-            </>
-          ) : (
-            <>
-              <Link href="/auth/login">
-                <Button>Login</Button>
-              </Link>
-              <Link href="/auth/register">
-                <Button variant="outline">Register</Button>
-              </Link>
-            </>
-          )}
-        </div>
+      <p className="text-muted-foreground text-lg md:text-xl">
+        {user
+          ? "You're logged in. Start exploring your dashboard or manage your profile."
+          : "Create your account or log in to access powerful tools and features."}
+      </p>
+      <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+        {user ? (
+          <>
+            <Button asChild>
+              <Link href="/profile">Go to Profile</Link>
+            </Button>
+            <form action="/api/auth/signout" method="post">
+              <SignOutButton />
+            </form>
+          </>
+        ) : (
+          <>
+            <Button asChild>
+              <Link href="/auth/login">Login</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/auth/register">Register</Link>
+            </Button>
+          </>
+        )}
       </div>
-    </main>
+    </div>
   );
 }

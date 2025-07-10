@@ -6,7 +6,7 @@ import { user } from "../lib/db/schema/auth-schema"
 import { auth } from "../lib/auth"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
+import { User } from "better-auth"
 
 
 export async function getUsers() {
@@ -197,5 +197,22 @@ export async function resetPasswordAction({ token, password }: { token: string, 
         console.error('Error resetting password:', error);
         return { success: false, error: 'Error resetting password' };
     }
+}
 
+export async function updateUserAction(data: Partial<User>) {
+    try {
+        const result = await auth.api.updateUser({
+            body: {
+                name: data.name
+            },
+            headers: await headers()
+        })
+        if (result.status){
+            return { success: true, message: 'User updated successfully' };
+        }
+        return { success: false, error: 'Error updating user' };
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return { success: false, error: 'Error updating user' };
+    }
 }

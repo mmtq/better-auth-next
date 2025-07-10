@@ -67,7 +67,7 @@ const SendVerificationEmailForm = ({ }: Props) => {
     }
     return (
 
-        <main className="min-h-screen flex items-center justify-center px-4 bg-background">
+        <div className="flex items-center justify-center px-4 bg-background">
             <div className="w-full max-w-md space-y-6">
                 <ReturnButton href="/auth/login" label="Login" />
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Reset Password</h2>
@@ -83,7 +83,7 @@ const SendVerificationEmailForm = ({ }: Props) => {
                     <Button type="submit" disabled={isPending} onClick={handleClick}>Reset Password</Button>
                 </form>
             </div>
-        </main >
+        </div >
     );
 };
 

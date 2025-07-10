@@ -11,6 +11,7 @@ import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { signIn } from '@/lib/auth-client'
 import Link from 'next/link'
+import ProviderButton from '../general/porvider-button'
 
 const loginSchema = z.object({
   email: z.string().email('Enter a valid email'),
@@ -113,6 +114,11 @@ export default function LoginForm() {
       >
         {isPending ? 'Logging in...' : 'Login'}
       </Button>
+
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 py-2 gap-2">
+          <ProviderButton name="google" signIn={true} />
+          <ProviderButton name="github" signIn={true} />
+        </div>
     </form>
   )
 }

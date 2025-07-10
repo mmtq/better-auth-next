@@ -14,7 +14,7 @@ export default async function Page({searchParams}: Props) {
         console.log(error)
     }
     return (
-        <main className="min-h-screen flex items-center justify-center px-4 bg-background">
+        <main className=" flex items-center justify-center px-4 bg-background">
             <div className="w-full max-w-md space-y-6">
                 <ReturnButton href="/auth/login" label="Login" />
                 <div className="w-full max-w-md space-y-6">

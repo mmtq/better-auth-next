@@ -21,6 +21,7 @@ const ProviderButton = ({ name, signIn }: Props) => {
     <Button
       variant="outline"
       onClick={onClick}
+      type="button"
     >
       Sign{signIn ? 'in' : 'up'} using {name==='google' ? 'Google' : 'GitHub'}
     </Button>
