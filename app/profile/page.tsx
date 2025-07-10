@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { checkFullAccess } from "@/actions/auth-actions";
 import Image from "next/image";
+import { Settings } from "lucide-react";
 
 export default async function ProfilePage() {
   
@@ -48,7 +49,7 @@ export default async function ProfilePage() {
             )
           }
           <h1 className="text-2xl font-bold">{session.user.name}</h1>
-          <Button variant={'outline'} asChild><Link href="/profile/edit">Update Profile</Link></Button>
+          <Button variant={'outline'} asChild><Link href="/profile/settings"><Settings /></Link></Button>
         </div>
         <SignOutButton />
       </div>

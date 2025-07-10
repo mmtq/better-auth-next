@@ -6,7 +6,6 @@ import { Button } from '../ui/button';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { updateUserAction } from '@/actions/auth-actions';
-import { useRouter } from 'next/navigation';
 import { useSession } from '@/lib/auth-client';
 
 interface Props {
@@ -19,7 +18,6 @@ const editProfileFormSchema = z.object({
 
 
 const EditProfileForm = ({ }: Props) => {
-    const router = useRouter()
     const session = useSession()
     const [form, setForm] = useState({ name: session?.data?.user?.name || '' })
     const [isPending, startTransition] = useTransition()
@@ -38,7 +36,6 @@ const EditProfileForm = ({ }: Props) => {
                 const response = await updateUserAction(form)
                 if (response.success) {
                     toast.success(response.message)
-                    router.push('/profile')
                 } else {
                     toast.error(response.error)
                 }
@@ -50,7 +47,7 @@ const EditProfileForm = ({ }: Props) => {
     }
 
     return (
-        <form className='space-y-4'>
+        <form className='py-4 space-y-2'>
             <div className='space-y-2'>
                 <Label htmlFor="name">Name</Label>
                 <Input defaultValue={session?.data?.user?.name} type="text" id="name" placeholder="Your name" className='mt-2' onChange={(e) => setForm({ ...form, name: e.target.value })} />

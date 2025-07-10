@@ -7,6 +7,7 @@ import { auth } from "../lib/auth"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { User } from "better-auth"
+import { APIError } from "better-auth/api"
 
 
 export async function getUsers() {
@@ -214,5 +215,24 @@ export async function updateUserAction(data: Partial<User>) {
     } catch (error) {
         console.error('Error updating user:', error);
         return { success: false, error: 'Error updating user' };
+    }
+}
+
+export async function changeUserPasswordAction({ currentPassword, newPassword }: { currentPassword: string, newPassword: string }) {
+    try {
+        const { token } = await auth.api.changePassword({
+            body: {
+                currentPassword,
+                newPassword
+            },
+            headers: await headers()
+        })
+        if (user) {
+            return { success: true, message: 'Password changed successfully' };
+        }
+        return { success: false, error: 'Error changing password' };
+    } catch (error) {
+        console.error('Error changing password:', error);
+        return { success: false, error: error instanceof APIError ? error.message : 'Error changing password' };
     }
 }
