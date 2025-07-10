@@ -1,36 +1,192 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Better Auth Starter Template
 
-## Getting Started
+This is a complete authentication system built with **Better Auth**, **Next.js 15 App Router**, **Drizzle**, and **Neon (Postgres)**. It includes email/password authentication, OAuth (Google & GitHub), role management, email verification, and more—ready for production.
 
-First, run the development server:
+## 🚀 Features
+
+- 🔐 Authentication with Email/Password and OAuth (Google, GitHub)
+- ✅ Email Verification & Password Reset
+- 🔁 Magic Link Login
+- 👥 Role-based Access Control (RBAC) with Admin Panel
+- 🍪 Secure Sessions & Cookie Handling
+- 🧰 Built-in Hooks, Middleware, and Utilities
+- 📬 Email Templates via Nodemailer
+- 🔄 Client + Server Actions Integration
+- 📦 Prisma ORM with PostgreSQL on Neon.tech
+- 🌐 Type-safe Auth Client
+- 🧪 Better Auth Plugins (argon2, Magic Link, etc.)
+- 🎨 UI-ready components for sign-in, sign-up, and profile management
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/better-auth-app.git
+cd better-auth-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+# or
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Setup Environment Variables
 
-## Learn More
+Create a `.env` file based on `.env.example`:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+DATABASE_URL=your_neon_postgres_connection
+BETTER_AUTH_SECRET=...
+BETTER_AUTH_URL=...
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXT_PUBLIC_URL=...
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+ADMIN_EMAILS="...#...#..."
 
-## Deploy on Vercel
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+GITHUB_CLIENT_ID="Ov23li431JufyS8j60HR"
+GITHUB_CLIENT_SECRET="17b33221c2f31ddc3e0bd64261497881f98dcb43"
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+NODEMAILER_USER=...
+NODEMAILER_APP_PASSWORD=...
+```
+
+> Get a Neon DB at [neon.tech](https://neon.tech), and fill in your SMTP and OAuth credentials.
+
+---
+
+## 🧱 Database Setup
+
+---
+
+## 🧠 Project Structure
+
+```
+lib/
+ ├── auth.ts              # Server-side Better Auth config
+ ├── auth-client.ts       # Client-side Better Auth instance
+ ├── db                   # db
+    ├── index.ts
+    ├── schema
+          ├── ...
+app/
+ ├── api/auth/[...all]/   # Auth route handler
+ ├── profile/             # Protected profile page
+ ├── admin/dashboard/     # Admin-only route
+ └── ...
+components/
+ ├── general
+      ├── ...
+ ├── ui
+      ├── ...
+ └── ...
+```
+
+---
+
+## 🧪 Development Scripts
+
+Update your `package.json`:
+
+```json
+"scripts": {
+  "dev": "next dev --turbopack",
+  "build": "next build",
+  "start": "next start",
+  "drizzle:push": "drizzle-kit push"
+}
+```
+
+---
+
+## 🔑 Authentication Options
+
+### ✅ Email & Password
+- Minimum password length
+- Auto sign-in after sign-up
+- Argon2 password hashing
+- Email verification required
+
+### 🧙‍♂️ Magic Link
+- Optional one-click sign-in experience
+
+### 🌐 OAuth
+- Google & GitHub integration
+
+---
+
+## 🛡️ Role Management
+
+- Admin/Editor/User roles
+- Guarded routes (e.g., `/admin/dashboard`)
+- Role-based UI and access
+- Enum-based role system with Prisma
+- Role editing from the Admin Panel
+
+---
+
+## ✉️ Email Features
+
+- Email verification links
+- Custom email templates
+- Password reset flow
+- Post sign-up onboarding
+
+---
+
+## 🔄 Auth Hooks & Middleware
+
+- Validate email format
+- Transform name input
+- Session cookie checks
+- Typed `useSession` hook with custom fields
+
+---
+
+## 📸 User Profiles
+
+- Upload and show user image
+- Update name and password
+- Custom session data
+
+---
+
+## 🔌 Plugins Used
+
+- `@node-rs/argon2` for secure hashing
+- `Magic Link` login
+- `nextCookies` plugin
+- Better Auth Admin Plugin
+
+---
+
+## ✅ To Do
+
+- [x] Sign In/Up with Email
+- [x] OAuth Login (Google/GitHub)
+- [x] Role-based access control
+- [x] Admin panel to manage users
+- [x] Email verification & password reset
+- [x] Magic Link login
+- [x] Profile management
+- [x] Nodemailer integration
+
+---
+
+## 🧑‍💻 Author
+
+Made with ❤️ by [Mir Tarhimul](https://github.com/mmtq)
+
+---
+
+## 📄 License
+
+MIT License
