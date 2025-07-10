@@ -12,12 +12,14 @@ export default function Error() {
                 {
                     error === 'account_not_linked' && (
                         <div className="w-full max-w-md space-y-6">
-                            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-                                Account is already linked to another signin method
+                            <h1 className="text-2xl md:text-3xl font-bold text-destructive">
+                                Account is already linked
                             </h1>
-                            <p className="text-gray-600 text-lg md:text-xl">
-                                You can only link one signin method to your account
-                            </p>
+                            <div className="border border-l-4 border-destructive p-4 rounded-xl">
+                                <p>
+                                    The account is already linked to another user. You can only link one signin method to your account
+                                </p>
+                            </div> 
                         </div>
                     )
                 }

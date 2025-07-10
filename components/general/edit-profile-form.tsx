@@ -52,7 +52,7 @@ const EditProfileForm = ({ }: Props) => {
                 <Label htmlFor="name">Name</Label>
                 <Input defaultValue={session?.data?.user?.name} type="text" id="name" placeholder="Your name" className='mt-2' onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
-            <Button type='submit' onClick={handleSubmit} className='w-full' disabled={isPending} >{isPending ? 'Updating...' : 'Update'}</Button>
+            <Button type='submit' variant={'secondary'} onClick={handleSubmit} className='w-full cursor-pointer' disabled={isPending} >{isPending ? 'Updating...' : 'Update'}</Button>
         </form>
     );
 };

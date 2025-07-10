@@ -71,17 +71,19 @@ const SendVerificationEmailForm = ({ }: Props) => {
             <div className="w-full max-w-md space-y-6">
                 <ReturnButton href="/auth/login" label="Login" />
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Reset Password</h2>
-                <form className="max-w-sm w-full space-y-4">
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input id="password" type="password" placeholder="Enter your password" onChange={(e)=> setForm({...form, password: e.target.value})} />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="confirmPassword">Confirm Password</Label>
-                        <Input id="confirmPassword" type="password" placeholder="Confirm your password" onChange={(e)=> setForm({...form, confirmPassword: e.target.value})} />
-                    </div>
-                    <Button type="submit" disabled={isPending} onClick={handleClick}>Reset Password</Button>
-                </form>
+                <div className="border border-t-4 border-blue-400 p-4 rounded-xl">
+                    <form className="max-w-sm w-full space-y-4">
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input id="password" type="password" placeholder="Enter your password" onChange={(e)=> setForm({...form, password: e.target.value})} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="confirmPassword">Confirm Password</Label>
+                            <Input id="confirmPassword" type="password" placeholder="Confirm your password" onChange={(e)=> setForm({...form, confirmPassword: e.target.value})} />
+                        </div>
+                        <Button type="submit" disabled={isPending} onClick={handleClick}>Reset Password</Button>
+                    </form>
+                </div>
             </div>
         </div >
     );

@@ -63,7 +63,7 @@ const ChangePasswordForm = ({ }: Props) => {
                 <Label htmlFor="name">Confirm New Password</Label>
                 <Input type="password" placeholder='Confirm your new password' id="confirmNewPassword" name="confirmNewPassword" value={form.confirmNewPassword} onChange={(e) => setForm({ ...form, confirmNewPassword: e.target.value })} />
             </div>
-            <Button type='submit' onClick={handleSubmit} className='w-full' disabled={isPending} >{isPending ? 'Updating...' : 'Update'}</Button>
+            <Button type='submit' variant='secondary' onClick={handleSubmit} className='w-full cursor-pointer' disabled={isPending} >{isPending ? 'Updating...' : 'Update'}</Button>
         </form>
     );
 };

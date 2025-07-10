@@ -47,13 +47,15 @@ const SendVerificationEmailForm = ({ }: Props) => {
                 <ReturnButton href="/auth/login" label="Login" />
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Forgot Password</h2>
                 <p className="text-gray-600">Enter your email and we'll send you a link to reset your password</p>
-                <form className="max-w-sm w-full space-y-4">
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-                    </div>
-                    <Button type="submit" disabled={isPending} onClick={handleClick}>Reset Password</Button>
-                </form>
+                <div className="border border-t-4 border-blue-400 p-4 rounded-xl">
+                    <form className="max-w-sm w-full space-y-4">
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input id="email" type="email" placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
+                        </div>
+                        <Button type="submit" disabled={isPending} onClick={handleClick}>Reset Password</Button>
+                    </form>
+                </div>
             </div>
         </main >
     );

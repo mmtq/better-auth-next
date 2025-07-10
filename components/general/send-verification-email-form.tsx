@@ -40,13 +40,15 @@ const SendVerificationEmailForm = ({  }: Props) => {
         })
     }
   return (
-    <form className="max-w-sm w-full space-y-4">
-        <div className="flex flex-col gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="Email" onChange={(e)=> setEmail(e.target.value)} />
-        </div>
-        <Button type="submit" disabled={isPending} onClick={handleClick}>Resend verification email</Button>
-    </form>
+    <div className="border border-t-4 border-red-400 p-4 rounded-xl">
+        <form className="max-w-sm w-full space-y-4">
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="Email" onChange={(e)=> setEmail(e.target.value)} />
+            </div>
+            <Button type="submit" disabled={isPending} onClick={handleClick}>Resend verification email</Button>
+        </form>
+    </div>
   );
 };
 

@@ -1,15 +1,15 @@
-import { betterAuth } from 'better-auth'
+import { betterAuth, type BetterAuthOptions } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import db from './db'
 import * as schema from './db/schema/auth-schema'
 import { createAuthMiddleware, APIError } from 'better-auth/api'
 import { normalizeName, VALID_DOMAINS } from './utils'
-import { admin } from 'better-auth/plugins'
+import { admin, customSession } from 'better-auth/plugins'
 // import { nextCookies } from 'better-auth/next-js'
 import { ac, roles } from '@/lib/permissions'
 import { sendEmailAction } from '@/actions/sendmail'
 
-export const auth = betterAuth({
+const options = {
     database: drizzleAdapter(db, {
         provider: 'pg',
         schema
@@ -40,7 +40,7 @@ export const auth = betterAuth({
         sendOnSignUp: true,
         expiresIn: 60 * 60,
         autoSignInAfterVerification: true,
-        sendVerificationEmail: async ({ user, url}) => {
+        sendVerificationEmail: async ({ user, url }) => {
             const link = new URL(url)
             link.searchParams.set('callbackURL', '/auth/verify')
             await sendEmailAction({
@@ -115,7 +115,7 @@ export const auth = betterAuth({
     session: {
         expiresIn: 30 * 24 * 60 * 60,
     },
-    account:{
+    account: {
         accountLinking: {
             enabled: false
         }
@@ -138,7 +138,32 @@ export const auth = betterAuth({
             adminUserIds: ['6ebc8d0e-79e5-4eab-97e3-490923587145'],
             ac,
             roles,
-        })
+        }),
+    ]
+} satisfies BetterAuthOptions
+
+export const auth = betterAuth({
+    ...options,
+    plugins: [
+        ...(options.plugins ?? []),
+        customSession(async ({ user, session }) => {
+            return {
+                session: {
+                    token: session.token,
+                    expiresAt: session.expiresAt,
+                    userAgent: session.userAgent,
+                },
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    createdAt: user.createdAt,
+                    image: user.image,
+                    role: user.role,
+                    mmtq: "mmtq",
+                }
+            }
+        }, options)
     ]
 })
 

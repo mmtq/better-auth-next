@@ -49,9 +49,8 @@ export default async function ProfilePage() {
             )
           }
           <h1 className="text-2xl font-bold">{session.user.name}</h1>
-          <Button variant={'outline'} asChild><Link href="/profile/settings"><Settings /></Link></Button>
         </div>
-        <SignOutButton />
+          <Button variant={'outline'} asChild><Link href="/profile/settings"><Settings /></Link></Button>
       </div>
       <div>
         <p><span className="font-bold">Email:</span> {session.user.email}</p>
