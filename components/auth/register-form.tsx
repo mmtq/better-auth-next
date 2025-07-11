@@ -13,6 +13,7 @@ import { signUp } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import ProviderButton from "../general/porvider-button"
+import MagicLinkForm from "./magic-link-form"
 
 const validEmailDomains = ['gmail.com', 'yahoo.com', 'outlook.com']
 
@@ -100,6 +101,8 @@ export default function RegisterForm() {
       {apiError && (
         <p className="text-sm text-red-500 text-center">{apiError}</p>
       )}
+
+      <MagicLinkForm  />
 
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>

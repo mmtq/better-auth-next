@@ -13,7 +13,6 @@ const magicLinkFormSchema = z.object({
     email: z.string().email('Enter a valid email'),
 })
 
-
 const MagicLinkForm = () => {
     const [isPending, startTransition] = useTransition();
     const [form, setForm] = useState({ email: '' });
@@ -44,9 +43,8 @@ const MagicLinkForm = () => {
   return (
     <Accordion className='border rounded-2xl px-2' type="single" collapsible>
         <AccordionItem value="item-1">
-          <AccordionTrigger><Star />Login with Magic Link</AccordionTrigger>
+          <AccordionTrigger className="cursor-pointer"><Star />Coninue with Magic Link</AccordionTrigger>
           <AccordionContent>
-            <form>
               <div className="flex items-center gap-2">
                 <Input
                   type="email"
@@ -56,7 +54,6 @@ const MagicLinkForm = () => {
                 />
                 <Button onClick={handleSubmit} variant={'outline'} disabled={isPending} type="submit">Send</Button>
               </div>
-            </form>
           </AccordionContent>
         </AccordionItem>
       </Accordion>

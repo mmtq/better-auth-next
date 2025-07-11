@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import NavSign from "@/components/general/nav-sign";
+import Header from "@/components/general/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,22 +33,7 @@ export default function RootLayout({
       >
         <div className="min-h-screen flex flex-col bg-background text-foreground">
           {/* Header */}
-          <header className="sticky top-0 z-40 w-full border-b bg-background/90 backdrop-blur">
-            <div className="container mx-auto flex h-16 items-center justify-between px-4">
-              <Link href="/" className="text-lg font-semibold tracking-tight hover:opacity-80">
-                BetterAuthNext
-              </Link>
-
-              <div className="flex items-center gap-2">
-                {/* Example Nav Button */}
-                <NavSign />
-
-                {/* Optional Theme Toggle */}
-                {/* <ModeToggle /> */}
-              </div>
-            </div>
-          </header>
-
+          <Header />
           {/* Main Content */}
           <main className="flex-1 container max-w-4xl w-full mx-auto px-4 py-6">
             {children}

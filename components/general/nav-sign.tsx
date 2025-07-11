@@ -1,21 +1,22 @@
-'use client';
-
-import { useSession } from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
 import SignOutButton from "../auth/sign-out-button";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { headers } from "next/headers";
 
 interface Props {
   
 }
 
-const NavSign = ({  }: Props) => {
-    const session = useSession()
-    const isAuthenticated = session?.data?.user
+const NavSign = async ({  }: Props) => {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    })
+    const notAuthenticated = !session?.user
   return (
      <div>
          {
-            isAuthenticated ? (
+            !notAuthenticated ? (
                 <SignOutButton />
             ) : (
                 <div className="flex items-center gap-4">
