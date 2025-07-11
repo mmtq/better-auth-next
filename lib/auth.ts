@@ -4,7 +4,7 @@ import db from './db'
 import * as schema from './db/schema/auth-schema'
 import { createAuthMiddleware, APIError } from 'better-auth/api'
 import { normalizeName, VALID_DOMAINS } from './utils'
-import { admin, customSession } from 'better-auth/plugins'
+import { admin, customSession, magicLink } from 'better-auth/plugins'
 // import { nextCookies } from 'better-auth/next-js'
 import { ac, roles } from '@/lib/permissions'
 import { sendEmailAction } from '@/actions/sendmail'
@@ -139,6 +139,18 @@ const options = {
             ac,
             roles,
         }),
+        magicLink({
+            sendMagicLink: async ({ email, url }) => {
+                await sendEmailAction({
+                    to: email,
+                    subject: 'Magic Link Login',
+                    meta: {
+                        description: 'Click the link below to sign in with magic link.',
+                        link: url
+                    }
+                })
+            }
+        })
     ]
 } satisfies BetterAuthOptions
 

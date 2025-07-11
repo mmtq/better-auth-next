@@ -12,6 +12,9 @@ import { toast } from 'sonner'
 import { signIn } from '@/lib/auth-client'
 import Link from 'next/link'
 import ProviderButton from '../general/porvider-button'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
+import { Star } from 'lucide-react'
+import MagicLinkForm from './magic-link-form'
 
 const loginSchema = z.object({
   email: z.string().email('Enter a valid email'),
@@ -47,7 +50,7 @@ export default function LoginForm() {
 
         if (error) {
           toast.error(error.message || 'Login failed')
-          if(error.code === "EMAIL_NOT_VERIFIED"){
+          if (error.code === "EMAIL_NOT_VERIFIED") {
             router.push('/auth/verify?error=email_not_verified')
           }
         } else {
@@ -75,6 +78,8 @@ export default function LoginForm() {
           </Link>
         </p>
       </div>
+
+      <MagicLinkForm />
 
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
@@ -116,9 +121,9 @@ export default function LoginForm() {
       </Button>
 
       <div className="grid sm:grid-cols-1 md:grid-cols-2 py-2 gap-2">
-          <ProviderButton name="google" signIn={true} />
-          <ProviderButton name="github" signIn={true} />
-        </div>
+        <ProviderButton name="google" signIn={true} />
+        <ProviderButton name="github" signIn={true} />
+      </div>
     </form>
   )
 }
