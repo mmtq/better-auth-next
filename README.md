@@ -168,19 +168,6 @@ Update your `package.json`:
 
 ---
 
-## ✅ To Do
-
-- [x] Sign In/Up with Email
-- [x] OAuth Login (Google/GitHub)
-- [x] Role-based access control
-- [x] Admin panel to manage users
-- [x] Email verification & password reset
-- [x] Magic Link login
-- [x] Profile management
-- [x] Nodemailer integration
-
----
-
 ## 🧑‍💻 Author
 
 Made with ❤️ by [Mir Tarhimul](https://github.com/mmtq)
