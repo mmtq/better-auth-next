@@ -12,7 +12,7 @@ This is a complete authentication system built with **Better Auth**, **Next.js 1
 - 🧰 Built-in Hooks, Middleware, and Utilities
 - 📬 Email Templates via Nodemailer
 - 🔄 Client + Server Actions Integration
-- 📦 Prisma ORM with PostgreSQL on Neon.tech
+- 📦 Drizzle ORM with PostgreSQL on Neon.tech
 - 🌐 Type-safe Auth Client
 - 🧪 Better Auth Plugins (argon2, Magic Link, etc.)
 - 🎨 UI-ready components for sign-in, sign-up, and profile management
@@ -128,7 +128,7 @@ Update your `package.json`:
 - Admin/Editor/User roles
 - Guarded routes (e.g., `/admin/dashboard`)
 - Role-based UI and access
-- Enum-based role system with Prisma
+- Enum-based role system with Drizzle
 - Role editing from the Admin Panel
 
 ---
